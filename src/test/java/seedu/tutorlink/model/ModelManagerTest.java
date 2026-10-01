@@ -170,4 +170,28 @@ public class ModelManagerTest {
 
         assertEquals(null, modelManager.getSelectedStudent().get());
     }
+
+    @Test
+    public void updateFilteredStudentList_selectedStudentHidden_selectionCleared() {
+        modelManager.addStudent(ALICE);
+        modelManager.addStudent(BENSON);
+        modelManager.setSelectedStudent(ALICE);
+
+        modelManager.updateFilteredStudentList(new NameContainsKeywordsPredicate(List.of("Benson")));
+
+        assertEquals(null, modelManager.getSelectedStudent().get());
+    }
+
+    @Test
+    public void updateFilteredStudentList_selectedStudentStillShown_selectionKept() {
+        modelManager.addStudent(ALICE);
+        modelManager.addStudent(BENSON);
+        modelManager.setSelectedStudent(ALICE);
+
+        modelManager.updateFilteredStudentList(new NameContainsKeywordsPredicate(List.of("Alice")));
+        assertEquals(ALICE, modelManager.getSelectedStudent().get());
+
+        modelManager.updateFilteredStudentList(PREDICATE_SHOW_ALL_STUDENTS);
+        assertEquals(ALICE, modelManager.getSelectedStudent().get());
+    }
 }

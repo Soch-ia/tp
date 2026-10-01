@@ -140,6 +140,10 @@ public class ModelManager implements Model {
     public void updateFilteredStudentList(Predicate<Student> predicate) {
         requireNonNull(predicate);
         filteredStudents.setPredicate(predicate);
+        // Do not keep showing a student the filter has hidden from the list
+        if (selectedStudent.get() != null && !filteredStudents.contains(selectedStudent.get())) {
+            selectedStudent.set(null);
+        }
     }
 
     @Override

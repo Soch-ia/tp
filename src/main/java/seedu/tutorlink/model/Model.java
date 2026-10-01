@@ -74,7 +74,8 @@ public interface Model {
 
     /**
      * Returns the student currently shown in detail, or a property holding {@code null} if no student is selected.
-     * The selection is cleared when the student is deleted, and follows the student when it is edited.
+     * The selection is cleared when the student is deleted or hidden by a filter, and follows the student when it
+     * is edited.
      */
     ReadOnlyObjectProperty<Student> getSelectedStudent();
 

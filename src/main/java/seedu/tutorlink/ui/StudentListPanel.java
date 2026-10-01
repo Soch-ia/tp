@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -52,6 +53,8 @@ public class StudentListPanel extends UiPart<Region> {
         studentCount.textProperty().bind(Bindings.createStringBinding(() ->
                 describeCount(shownStudents.size(), allStudents.size()), shownStudents, allStudents));
         selectedStudent.addListener((observable, oldStudent, newStudent) -> highlight(newStudent));
+        // Changing the filter rebuilds the rows and drops the highlight, so restore it
+        shownStudents.addListener((ListChangeListener<Student>) change -> highlight(selectedStudent.getValue()));
     }
 
     /**
@@ -74,7 +77,7 @@ public class StudentListPanel extends UiPart<Region> {
     }
 
     private void highlight(Student student) {
-        if (student == null) {
+        if (student == null || !studentListView.getItems().contains(student)) {
             studentListView.getSelectionModel().clearSelection();
             return;
         }
